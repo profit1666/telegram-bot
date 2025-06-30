@@ -82,3 +82,5 @@ def handle_buttons(message):
 
 print("🚀 Бот успешно запущен!")
 bot.polling(none_stop=True)
+from webserver import keep_alive
+keep_alive()

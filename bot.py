@@ -3,9 +3,13 @@ from telebot import types
 import random
 import sqlite3
 from datetime import datetime
+from webserver import keep_alive
 
+# 🔐 Токен бота
 bot = telebot.TeleBot("7856074080:AAE9HoPWWVGGPlWiySZoKlMFVE5VPb5SvVU")
-user_language = {}
+
+# 🌐 Включаем веб-сервер для Render
+keep_alive()
 
 # 🗃 Подключение к базе лидов
 conn = sqlite3.connect('leads.db', check_same_thread=False)
@@ -19,7 +23,10 @@ cursor.execute('''
 ''')
 conn.commit()
 
-# 🎯 Умная генерация чисел по трёхуровневой частоте
+# 🧠 Память о языке
+user_language = {}
+
+# 🎯 Умная генерация чисел
 def generate_number():
     r = random.random()
     if r < 0.70:
@@ -64,7 +71,7 @@ def choose_language(message):
     markup.add(types.KeyboardButton(btn_change))
     bot.send_message(chat_id, intro_msg, reply_markup=markup)
 
-# 🎯 Генерация сигнала и смена языка
+# 🎯 Обработка кнопок
 @bot.message_handler(func=lambda m: m.text in [
     "🎯 Get Signal", "🎯 सिग्नल प्राप्त करें", "🔄 Change Language", "🔄 भाषा बदलें"])
 def handle_buttons(message):
@@ -81,9 +88,4 @@ def handle_buttons(message):
     bot.send_message(chat_id, signal_text)
 
 print("🚀 Бот успешно запущен!")
-from webserver import keep_alive
-keep_alive()
-
 bot.polling(none_stop=True)
-from webserver import keep_alive
-keep_alive()

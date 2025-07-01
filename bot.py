@@ -5,13 +5,13 @@ import sqlite3
 from datetime import datetime
 from webserver import keep_alive
 
-# 🔐 Токен бота
+# 🔐 Твой токен Telegram-бота
 bot = telebot.TeleBot("7856074080:AAE9HoPWWVGGPlWiySZoKlMFVE5VPb5SvVU")
 
-# 🌐 Включаем веб-сервер для Render
+# 🌐 Запуск Flask-сервера для Render
 keep_alive()
 
-# 🗃 Подключение к базе лидов
+# 📦 Подключение к базе данных
 conn = sqlite3.connect('leads.db', check_same_thread=False)
 cursor = conn.cursor()
 cursor.execute('''
@@ -23,10 +23,9 @@ cursor.execute('''
 ''')
 conn.commit()
 
-# 🧠 Память о языке
 user_language = {}
 
-# 🎯 Умная генерация чисел
+# 📲 Генерация сигнала
 def generate_number():
     r = random.random()
     if r < 0.70:
@@ -36,7 +35,7 @@ def generate_number():
     else:
         return round(random.uniform(100.0, 999.9), 1)
 
-# 🔻 Команда /start — выбор языка
+# 🚀 Старт команды
 @bot.message_handler(commands=['start'])
 def start(message):
     send_language_selection(message.chat.id)
@@ -50,7 +49,7 @@ def send_language_selection(chat_id):
         reply_markup=markup
     )
 
-# 🔁 Обработка выбора языка
+# 🌐 Выбор языка
 @bot.message_handler(func=lambda m: m.text in ["🇬🇧 English", "🇮🇳 हिंदी"])
 def choose_language(message):
     lang = "en" if "English" in message.text else "hi"
@@ -71,7 +70,7 @@ def choose_language(message):
     markup.add(types.KeyboardButton(btn_change))
     bot.send_message(chat_id, intro_msg, reply_markup=markup)
 
-# 🎯 Обработка кнопок
+# 🔘 Обработка кнопок
 @bot.message_handler(func=lambda m: m.text in [
     "🎯 Get Signal", "🎯 सिग्नल प्राप्त करें", "🔄 Change Language", "🔄 भाषा बदलें"])
 def handle_buttons(message):
